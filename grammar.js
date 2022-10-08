@@ -76,44 +76,65 @@ module.exports = grammar({
     word: ($) => $.identifier,
 
     rules: {
-        program: ($) => choice($._expression, optional($.chunks)),
+        program: ($) => choice($._expr, optional($.chunks)),
         chunks: ($) => "\t",
 
-        _expression: ($) =>
+        _expr: ($) =>
             choice(
-                $.tok_nil,
+                $.nil,
                 $.number_literal,
                 $.string_literal,
                 $.func_call,
                 $.binop,
+                $.unop,
+                $.if_expr,
+                $.while_expr,
                 $._parenthesis_exp
             ),
 
         func_call: ($) =>
             seq(
                 field("func_name", $.identifier),
-                $._tok_lpar,
-                optional(seq($._expression, repeat(seq(",", $._expression)))),
-                $._tok_rpar
+                "(",
+                optional(seq($._expr, repeat(seq(",", $._expr)))),
+                ")"
             ),
 
         // https://github.com/tjdevries/tree-sitter-lua/blob/master/grammar.js
         binop: ($) =>
             choice(
                 ...["*", "/", "+", "-", "&", "|"].map((op) =>
-                    prec.left(PREC[op], seq($._expression, op, $._expression))
+                    prec.left(PREC[op], seq($._expr, op, $._expr))
                 ),
                 ...["<", ">", "<=", ">=", "=", "<>"].map((op) =>
                     // Using prec.left for now, but < and all are not associative
-                    prec.left(PREC[op], seq($._expression, op, $._expression))
+                    prec.left(PREC[op], seq($._expr, op, $._expr))
                 )
             ),
 
+        unop: ($) => seq("-", $._expr),
+
         _parenthesis_exp: ($) =>
+            seq("(", optional(seq($._expr, repeat(seq(";", $._expr)))), ")"),
+
+        // Control blocks
+        if_expr: ($) =>
+            prec.right(
+                seq(
+                    "if",
+                    field("condition", $._expr),
+                    "then",
+                    field("body", $._expr),
+                    field("else", optional(seq("else", $._expr)))
+                )
+            ),
+
+        while_expr: ($) =>
             seq(
-                $._tok_lpar,
-                optional(seq($._expression, repeat(seq(";", $._expression)))),
-                $._tok_rpar
+                "while",
+                field("condition", $._expr),
+                "do",
+                field("body", $._expr)
             ),
 
         // Lexing tokens
@@ -133,14 +154,7 @@ module.exports = grammar({
             );
         },
 
-        _tok_lpar: ($) => "(",
-        _tok_rpar: ($) => ")",
-        _tok_lbrack: ($) => "[",
-        _tok_rbrack: ($) => "]",
-
         // Keywords
-        tok_nil: ($) => "nil",
-        tok_true: ($) => "true",
-        tok_false: ($) => "false",
+        nil: ($) => "nil",
     },
 });
