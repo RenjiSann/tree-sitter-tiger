@@ -1,0 +1,69 @@
+==========
+empty_comment
+==========
+
+/**/
+
+----------
+
+(program
+    (comment))
+
+==========
+code_between_comments
+==========
+
+/* foo */
+"test"
+/** bar */
+
+----------
+
+(program
+    (comment)
+    (expression (tok_string))
+    (comment))
+
+==========
+nested_comments
+==========
+
+/* /* foo */ */
+
+----------
+
+(program
+    (comment))
+
+==========
+comment_with_stars
+==========
+
+/**********/
+
+----------
+
+(program
+    (comment))
+
+==========
+comment_with_slashes
+==========
+
+/* /////////// */
+
+----------
+
+(program
+    (comment))
+
+==========
+unfinished_comment
+==========
+
+/* Hello
+
+----------
+
+(program
+    (ERROR **))

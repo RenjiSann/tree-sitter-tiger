@@ -1,0 +1,129 @@
+{
+  "name": "tiger",
+  "rules": {
+    "program": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "chunks"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "expression": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "tok_nil"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "tok_number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "tok_string"
+        }
+      ]
+    },
+    "chunks": {
+      "type": "STRING",
+      "value": "\t"
+    },
+    "tok_id": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z]([a-zA-Z0-9_]*)|_main"
+    },
+    "tok_nil": {
+      "type": "STRING",
+      "value": "nil"
+    },
+    "tok_number": {
+      "type": "PATTERN",
+      "value": "\\d+"
+    },
+    "tok_string": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\""
+          },
+          {
+            "type": "FIELD",
+            "name": "content",
+            "content": {
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\\\]"
+                  },
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "\\"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "[abfnrtv]|[0-7]{3}|x[a-fA-F0-9]{2}|\\\\|\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "\""
+          }
+        ]
+      }
+    }
+  },
+  "extras": [
+    {
+      "type": "SYMBOL",
+      "name": "comment"
+    },
+    {
+      "type": "PATTERN",
+      "value": "(\\n\\r|\\r\\n|\\n)+"
+    },
+    {
+      "type": "PATTERN",
+      "value": "( |\\t|\\r|\\n)+"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "comment"
+    }
+  ],
+  "inline": [],
+  "supertypes": []
+}
+

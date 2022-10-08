@@ -1,0 +1,64 @@
+[
+  {
+    "type": "expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "tok_nil",
+          "named": true
+        },
+        {
+          "type": "tok_number",
+          "named": true
+        },
+        {
+          "type": "tok_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "program",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "chunks",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "chunks",
+    "named": true
+  },
+  {
+    "type": "comment",
+    "named": true
+  },
+  {
+    "type": "tok_nil",
+    "named": true
+  },
+  {
+    "type": "tok_number",
+    "named": true
+  },
+  {
+    "type": "tok_string",
+    "named": true
+  }
+]
