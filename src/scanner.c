@@ -6,6 +6,16 @@ enum TokenType
     COMMENT,
 };
 
+bool eat_if(TSLexer *lexer, char c)
+{
+    if (!lexer->eof(lexer) && lexer->lookahead == c)
+    {
+        lexer->advance(lexer, true);
+        return true;
+    }
+    return false;
+}
+
 bool is_tiger_whitespace(char c)
 {
     return c == ' ' || c == '\t' || c == '\n' || c == '\r';
@@ -39,15 +49,13 @@ bool tree_sitter_tiger_external_scanner_scan(void *payload, TSLexer *lexer,
 
     // For some reason, we must skip preceding whitespaces and newlines
     // manually.
-    while (is_tiger_whitespace(lexer->lookahead))
+    while (!lexer->eof(lexer) && is_tiger_whitespace(lexer->lookahead))
         lexer->advance(lexer, false);
 
-    if (lexer->lookahead != '/')
+    if (!eat_if(lexer, '/'))
         return false;
-    lexer->advance(lexer, true);
-    if (lexer->lookahead != '*')
+    if (!eat_if(lexer, '*'))
         return false;
-    lexer->advance(lexer, true);
 
     int depth = 1;
 
@@ -56,6 +64,9 @@ bool tree_sitter_tiger_external_scanner_scan(void *payload, TSLexer *lexer,
     {
         char c = lexer->lookahead;
         lexer->advance(lexer, true);
+        // If c was the last character
+        if (lexer->eof(lexer))
+            return false;
         // Encountered '*/'
         if (c == '*' && lexer->lookahead == '/')
         {
@@ -63,7 +74,8 @@ bool tree_sitter_tiger_external_scanner_scan(void *payload, TSLexer *lexer,
             depth -= 1;
         }
         // Encountered '/*'
-        else if (c == '/' && lexer->lookahead == '*') {
+        else if (c == '/' && lexer->lookahead == '*')
+        {
             lexer->advance(lexer, true);
             depth += 1;
         }
