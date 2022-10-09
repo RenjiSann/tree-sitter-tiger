@@ -1,2 +1,5 @@
 # In case I forget to remove it:
 log.html
+
+# Rust build files
+target/

@@ -237,6 +237,11 @@
     }
   },
   {
+    "type": "break",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "chunks",
     "named": true,
     "fields": {},
@@ -1127,6 +1132,11 @@
     }
   },
   {
+    "type": "nil",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "program",
     "named": true,
     "fields": {},
@@ -1869,10 +1879,6 @@
     "named": false
   },
   {
-    "type": "break",
-    "named": true
-  },
-  {
     "type": "comment",
     "named": true
   },
@@ -1915,10 +1921,6 @@
   {
     "type": "let",
     "named": false
-  },
-  {
-    "type": "nil",
-    "named": true
   },
   {
     "type": "number_literal",

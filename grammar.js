@@ -226,7 +226,7 @@ module.exports = grammar({
         },
 
         // Keywords
-        nil: ($) => "nil",
-        break: ($) => "break",
+        nil: ($) => token("nil"),
+        break: ($) => token("break"),
     },
 });
