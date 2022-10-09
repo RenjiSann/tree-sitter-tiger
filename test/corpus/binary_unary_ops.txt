@@ -8,8 +8,8 @@ simple add
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple mul
@@ -21,8 +21,8 @@ simple mul
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple div
@@ -34,8 +34,8 @@ simple div
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple sub
@@ -47,8 +47,8 @@ simple sub
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple lt
@@ -60,8 +60,8 @@ simple lt
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple le
@@ -73,8 +73,8 @@ simple le
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple gt
@@ -86,8 +86,8 @@ simple gt
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple ge
@@ -99,8 +99,8 @@ simple ge
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple eq
@@ -112,8 +112,8 @@ simple eq
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple neq
@@ -125,8 +125,8 @@ simple neq
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple and
@@ -138,8 +138,8 @@ simple and
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 simple or
@@ -151,8 +151,8 @@ simple or
 
 (program
   (binop
-    (number_literal)
-    (number_literal)))
+    left: (number_literal)
+    right: (number_literal)))
 
 ================================================================================
 prio mul over add
@@ -164,10 +164,10 @@ prio mul over add
 
 (program
   (binop
-    (number_literal)
-    (binop
-      (number_literal)
-      (number_literal))))
+    left: (number_literal)
+    right: (binop
+      left: (number_literal)
+      right: (number_literal))))
 
 ================================================================================
 prio div over add
@@ -213,3 +213,45 @@ parenthesis priority
       (number_literal)
       (number_literal))
     (number_literal)))
+
+================================================================================
+unary op
+================================================================================
+
+- 5
+
+--------------------------------------------------------------------------------
+
+(program
+  (unop
+    (number_literal)))
+
+================================================================================
+unop in binops
+================================================================================
+
+1 * 4 + -5
+
+--------------------------------------------------------------------------------
+
+(program
+  (binop
+    left: (binop
+      left: (number_literal)
+      right: (number_literal))
+    right: (unop
+      (number_literal))))
+
+================================================================================
+unop precede binop
+================================================================================
+
+-5 * 4
+
+--------------------------------------------------------------------------------
+
+(program
+  (binop
+    left: (unop
+      (number_literal))
+    right: (number_literal)))

@@ -1,0 +1,163 @@
+================================================================================
+test01
+================================================================================
+
+/* An array type and an array variable. */
+let
+  type  arrtype = array of int
+  var arr1 : arrtype := arrtype [10] of 0
+in
+  arr1[2]
+end
+
+--------------------------------------------------------------------------------
+
+(program
+    (comment)
+    (let_expr
+        decl: (chunks
+            (type_dec
+                (id)
+                (type_id (id)))
+            (var_dec
+                var_name: (id)
+                var_type: (type_id (id))
+                var_expr: (array_inst
+                    (type_id (id))
+                    (number_literal)
+                    (number_literal))))
+        exp: (lvalue
+            (lvalue (id))
+            (number_literal))))
+
+================================================================================
+type_nil
+================================================================================
+
+let var a : nil := ()
+in
+  1
+end
+
+--------------------------------------------------------------------------------
+
+(program
+    (let_expr
+        decl: (chunks
+            (var_dec
+                var_name: (id)
+                var_type: (type_id (id))))
+        exp: (number_literal)))
+
+================================================================================
+a+a
+================================================================================
+
+a + "a"
+
+--------------------------------------------------------------------------------
+
+(program
+    (binop
+    left: (lvalue (id))
+    right: (string_literal)))
+
+================================================================================
+foobar
+================================================================================
+
+let
+  function foo() : int = bar()
+  function bar() : int = foo()
+in
+  0
+end
+
+--------------------------------------------------------------------------------
+
+(program
+    (let_expr
+        decl: (chunks
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (func_call 
+                    func_name: (id)))
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (func_call 
+                    func_name: (id))))
+        exp: (number_literal)))
+
+================================================================================
+foo stop bar
+================================================================================
+
+let
+  function foo() : int = bar()
+  var stop := 0
+  function bar() : int = foo()
+in
+  0
+end
+
+--------------------------------------------------------------------------------
+
+(program
+    (let_expr
+        decl: (chunks
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (func_call 
+                    func_name: (id)))
+            (var_dec
+                var_name: (id)
+                var_expr: (number_literal))
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (func_call 
+                    func_name: (id))))
+        exp: (number_literal)))
+
+================================================================================
+fbfsb
+================================================================================
+
+let
+  function foo() : int = 0
+  function bar() : int = 1
+  function foo() : int = 2
+  var stop := 0
+  function bar() : int = 3
+in
+  0
+end
+
+--------------------------------------------------------------------------------
+
+(program
+    (let_expr
+        decl: (chunks
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (number_literal))
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (number_literal))
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (number_literal))
+            (var_dec
+                var_name: (id)
+                var_expr: (number_literal))
+            (func_dec
+                func_name: (id)
+                func_type: (type_id (id))
+                func_body: (number_literal)))
+        exp: (number_literal)))
