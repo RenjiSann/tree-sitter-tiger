@@ -10,7 +10,7 @@ bool eat_if(TSLexer *lexer, char c)
 {
     if (!lexer->eof(lexer) && lexer->lookahead == c)
     {
-        lexer->advance(lexer, true);
+        lexer->advance(lexer, false);
         return true;
     }
     return false;
@@ -50,33 +50,32 @@ bool tree_sitter_tiger_external_scanner_scan(void *payload, TSLexer *lexer,
     // For some reason, we must skip preceding whitespaces and newlines
     // manually.
     while (!lexer->eof(lexer) && is_tiger_whitespace(lexer->lookahead))
-        lexer->advance(lexer, false);
+        lexer->advance(lexer, true);
 
     if (!eat_if(lexer, '/'))
         return false;
     if (!eat_if(lexer, '*'))
         return false;
 
+    lexer->result_symbol = COMMENT;
     int depth = 1;
 
     // Consume characters until arriving on the corresponding closing symbol.
     while (!lexer->eof(lexer) && depth > 0)
     {
         char c = lexer->lookahead;
-        lexer->advance(lexer, true);
+        lexer->advance(lexer, false);
         // If c was the last character
         if (lexer->eof(lexer))
             return false;
         // Encountered '*/'
-        if (c == '*' && lexer->lookahead == '/')
+        if (c == '*' && eat_if(lexer, '/'))
         {
-            lexer->advance(lexer, true);
             depth -= 1;
         }
         // Encountered '/*'
-        else if (c == '/' && lexer->lookahead == '*')
+        else if (c == '/' && eat_if(lexer, '*'))
         {
-            lexer->advance(lexer, true);
             depth += 1;
         }
     }

@@ -1,5 +1,3 @@
-const OBJ_KEYWORDS = ["class", "extends", "method", "new"];
-
 const PREC = {
     "*": 5,
     "/": 5,
@@ -172,7 +170,7 @@ module.exports = grammar({
                 seq("import", $.string_literal)
             ),
 
-        type_dec: ($) => seq("type", $.id, "=", $._ty),
+        type_dec: ($) => seq("type", field("type_name", $.type_id), "=", $._ty),
 
         func_dec: ($) =>
             seq(
@@ -206,27 +204,25 @@ module.exports = grammar({
             ),
         tyfields: ($) => sep_list($.tyfield, ","),
         tyfield: ($) => seq($.id, ":", $.type_id),
-        type_id: ($) => $.id,
+        type_id: ($) => choice("int", "string", $.id),
 
         // Lexing tokens
-        id: ($) => IDENTIFIER,
+        id: (_) => IDENTIFIER,
 
-        number_literal: ($) => NUMBER,
+        number_literal: (_) => NUMBER,
 
-        string_literal: ($) => {
-            const _allowed_char = /[^\\"]/;
-            const _escape = /\\(?:[abfnrtv]|[0-7]{3}|x[a-fA-F0-9]{2}|\\|")/;
-            return token(
-                seq(
-                    '"',
-                    field("content", repeat(choice(_allowed_char, _escape))),
-                    '"'
-                )
-            );
-        },
+        // A string literal is a sequence of characters (other than \ and ")
+        // between double quotes, possibly with escape sequences.
+        string_literal: ($) =>
+            seq(
+                '"',
+                field("content", repeat(choice(/[^\\"]/, $.escape_sequence))),
+                '"'
+            ),
+        escape_sequence: (_) => /\\(?:[abfnrtv]|[0-7]{3}|x[a-fA-F0-9]{2}|\\|")/,
 
         // Keywords
-        nil: ($) => token("nil"),
-        break: ($) => token("break"),
+        nil: (_) => token("nil"),
+        break: (_) => token("break"),
     },
 });

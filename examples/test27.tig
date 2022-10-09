@@ -1,0 +1,9 @@
+/* locals hide globals */
+let
+    type test = int
+    var a := 0
+    var b := 3
+    function g(a : int) : test = a * b
+in
+    g(2)
+end 

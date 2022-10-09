@@ -18,6 +18,7 @@
     "of"
     "function"
     "var"
+    "to"
     "type"
     "import"
  ;   "primitive"
@@ -25,8 +26,26 @@
 (nil) @keyword
 (break) @keyword
 
-; Built-in types
-(type_id) @type.builtin
+; types
+["int" "string"] @type.builtin
+(type_id (id) @type)
 
 (number_literal) @number
 (string_literal) @string
+(escape_sequence) @string.special
+
+; Special characters
+[
+    "*" "/" "+" "-" "<" ">" "<=" ">=" "<>" "=" "&" "|" ":="
+] @operator
+[ ";" "," ] @punctuation.delimiter
+
+
+; function names
+(func_call
+    func_name: (id) @function)
+(func_dec
+    func_name: (id) @function)
+
+
+(id) @variable

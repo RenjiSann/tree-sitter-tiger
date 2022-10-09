@@ -62,7 +62,9 @@ string_escapes
 --------------------------------------------------------------------------------
 
 (program
-  (string_literal))
+  (string_literal
+    (escape_sequence)
+    (escape_sequence)))
 
 ================================================================================
 function call no arg
