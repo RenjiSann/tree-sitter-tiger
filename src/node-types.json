@@ -1342,6 +1342,36 @@
     "type": "type_dec",
     "named": true,
     "fields": {
+      "type_def": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "array",
+            "named": false
+          },
+          {
+            "type": "of",
+            "named": false
+          },
+          {
+            "type": "tyfields",
+            "named": true
+          },
+          {
+            "type": "type_id",
+            "named": true
+          },
+          {
+            "type": "{",
+            "named": false
+          },
+          {
+            "type": "}",
+            "named": false
+          }
+        ]
+      },
       "type_name": {
         "multiple": false,
         "required": true,
@@ -1352,36 +1382,12 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "tyfields",
-          "named": true
-        },
-        {
-          "type": "type_id",
-          "named": true
-        }
-      ]
     }
   },
   {
     "type": "type_id",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "id",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "unop",
@@ -1961,6 +1967,10 @@
   },
   {
     "type": "of",
+    "named": false
+  },
+  {
+    "type": "other",
     "named": false
   },
   {

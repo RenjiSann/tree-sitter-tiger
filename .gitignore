@@ -3,3 +3,4 @@ log.html
 
 # Rust build files
 target/
+highlight_test.html

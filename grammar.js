@@ -170,7 +170,13 @@ module.exports = grammar({
                 seq("import", $.string_literal)
             ),
 
-        type_dec: ($) => seq("type", field("type_name", $.type_id), "=", $._ty),
+        type_dec: ($) =>
+            seq(
+                "type",
+                field("type_name", $.type_id),
+                "=",
+                field("type_def", $._ty)
+            ),
 
         func_dec: ($) =>
             seq(
@@ -204,7 +210,9 @@ module.exports = grammar({
             ),
         tyfields: ($) => sep_list($.tyfield, ","),
         tyfield: ($) => seq($.id, ":", $.type_id),
-        type_id: ($) => choice("int", "string", $.id),
+        // Alias "$.id" so the id rule is anonymous and will render "(type_id)"
+        // in the AST instead of "(type_id (id))"
+        type_id: ($) => choice("int", "string", alias($.id, "other")),
 
         // Lexing tokens
         id: (_) => IDENTIFIER,
@@ -219,6 +227,7 @@ module.exports = grammar({
                 field("content", repeat(choice(/[^\\"]/, $.escape_sequence))),
                 '"'
             ),
+        // escape_sequence has its own rule to highlight them differently.
         escape_sequence: (_) => /\\(?:[abfnrtv]|[0-7]{3}|x[a-fA-F0-9]{2}|\\|")/,
 
         // Keywords

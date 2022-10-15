@@ -23,12 +23,12 @@
     "import"
  ;   "primitive"
 ] @keyword
-(nil) @keyword
+(nil) @variable.builtin
 (break) @keyword
 
 ; types
 ["int" "string"] @type.builtin
-(type_id (id) @type)
+(type_id) @type
 
 (number_literal) @number
 (string_literal) @string
@@ -38,7 +38,7 @@
 [
     "*" "/" "+" "-" "<" ">" "<=" ">=" "<>" "=" "&" "|" ":="
 ] @operator
-[ ";" "," ] @punctuation.delimiter
+[";" ","] @punctuation.delimiter
 
 
 ; function names
